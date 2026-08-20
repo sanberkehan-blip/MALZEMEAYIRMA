@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gemini Excel/E-Tablo Aktarımı</title>
+    <title>Gemini Direkt Excel İndirme</title>
     <style>
         body { 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
@@ -25,17 +25,17 @@
         p { font-size: 14px; color: #64748b; margin: 0 0 20px 0; line-height: 1.4; }
         
         .upload-box { 
-            border: 2px dashed #10b981; 
+            border: 2px dashed #8b5cf6; 
             border-radius: 12px; 
             padding: 30px 20px; 
-            background: #ecfdf5; 
+            background: #f5f3ff; 
             cursor: pointer; 
             margin-bottom: 20px; 
             transition: background 0.2s;
         }
-        .upload-box:active { background: #d1fae5; }
+        .upload-box:active { background: #ede9fe; }
         .upload-box-icon { font-size: 32px; margin-bottom: 8px; display: block; }
-        .upload-box-text { font-weight: 600; color: #047857; font-size: 15px; }
+        .upload-box-text { font-weight: 600; color: #6d28d9; font-size: 15px; }
         
         #fileInput { display: none; }
         
@@ -98,7 +98,7 @@
         }
         .guide-title { font-size: 14px; font-weight: 700; color: #334155; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
         .guide-step { font-size: 13px; color: #475569; margin-bottom: 8px; line-height: 1.5; display: flex; align-items: flex-start; gap: 8px; }
-        .step-num { background: #10b981; color: white; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; flex-shrink: 0; margin-top: 2px; }
+        .step-num { background: #8b5cf6; color: white; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; flex-shrink: 0; margin-top: 2px; }
         
         .prompt-container { margin-top: 15px; text-align: left; display: none; }
         .prompt-label { font-size: 12px; font-weight: 600; color: #64748b; margin-bottom: 4px; display: block; }
@@ -107,11 +107,11 @@
 </head>
 <body>
     <div class="container">
-        <h2>Parça Listesi (Excel Aktarımı)</h2>
-        <p>Görseli seçin, tek tıkla Gemini'ye gönderin.</p>
+        <h2>Parça Listesi (Direkt İndirilebilir)</h2>
+        <p>Görseli seçin, doğrudan Excel (.xlsx) dosyası alın.</p>
         
         <div class="upload-box" onclick="document.getElementById('fileInput').click()">
-            <span class="upload-box-icon">📸</span>
+            <span class="upload-box-icon">📊</span>
             <span class="upload-box-text">Fotoğraf Çek veya Seç</span>
         </div>
         <input type="file" id="fileInput" accept="image/*" onchange="handleFile(event)">
@@ -124,14 +124,14 @@
         <div class="error" id="errorMsg"></div>
 
         <div class="guide-box">
-            <div class="guide-title">📌 Excel Olarak Nasıl Paylaşılır?</div>
-            <div class="guide-step"><span class="step-num">1</span><span>Fotoğrafı yükleyip siyah butona basın ve Gemini uygulamasına gönderin.</span></div>
-            <div class="guide-step"><span class="step-num">2</span><span>Gemini size tabloyu verdikten sonra, tablonun altındaki veya sağ üstündeki <strong>"E-Tablolara Aktar"</strong> butonuna basın.</span></div>
-            <div class="guide-step"><span class="step-num">3</span><span>E-Tablo açıldığında sağ üstteki menüden <strong>Paylaş -> Excel Olarak Gönder (Outlook)</strong> seçeneğini kullanarak dosyayı mail atabilirsiniz.</span></div>
+            <div class="guide-title">📌 Dosya Olarak Nasıl Alınır?</div>
+            <div class="guide-step"><span class="step-num">1</span><span>Fotoğrafı yükleyip siyah butona basın ve Gemini'ye gönderin.</span></div>
+            <div class="guide-step"><span class="step-num">2</span><span>Yeni komut sayesinde yapay zeka ekrana tablo çizmek yerine doğrudan arka planda bir Excel dosyası oluşturacaktır.</span></div>
+            <div class="guide-step"><span class="step-num">3</span><span>Size verdiği linke veya butona tıklayarak .xlsx dosyanızı indirebilir ve anında Outlook'tan paylaşabilirsiniz.</span></div>
         </div>
 
         <div class="prompt-container" id="promptContainer">
-            <span class="prompt-label">E-Tablo Butonunu Zorlayan Prompt:</span>
+            <span class="prompt-label">Direkt İndirme Sağlayan Prompt:</span>
             <textarea id="promptArea" class="prompt-box" readonly></textarea>
         </div>
     </div>
@@ -139,15 +139,15 @@
     <script>
         let currentFile = null;
 
-        // E-Tablolara Aktar butonunu zorunlu kılacak katı formatlama
-        const promptText = `Aşağıdaki görselde yer alan yedek parça listesini incele. Çıktıyı doğrudan Google E-Tablolara aktarabilmem için KESİNLİKLE PÜRÜZSÜZ BİR MARKDOWN TABLOSU formatında ver. 
-Lütfen tablonun öncesinde veya sonrasında HİÇBİR AÇIKLAMA YAZMA. Sadece tabloyu ver.
+        // Direkt dosya oluşturmayı zorlayan komut
+        const promptText = `Aşağıdaki görselde yer alan yedek parça listesini incele. LÜTFEN EKRANA TABLO VEYA METİN YAZMA. 
+Bunun yerine, kod/veri analizi yeteneklerini kullanarak bu verileri bir Excel (.xlsx) dosyasına dönüştür ve bana DOĞRUDAN İNDİRİLEBİLİR EXCEL DOSYASI linki ver.
 
-Tablo şu 4 sütundan oluşmalı: "Malzeme", "Malzeme Adı", "Adet", "Fiyat".
+Excel dosyasındaki sütunlar KESİNLİKLE şu şekilde olmalı: "Malzeme", "Malzeme Adı", "Adet", "Fiyat".
 Kurallar:
-1. Görselde fiyat veya bilgi yoksa o hücreyi boş bırak, sütunu SİLME.
+1. Görselde fiyat veya bilgi yoksa o hücreyi boş bırak.
 2. Adet kısmını sadece sayı olarak yaz.
-3. Kritik: '043.126' gibi standart kodların yanı sıra, görseldeki '1810 0291', 'SP 551889', 'FT 344571-K01', '075.168/2SD', 'SP C8 D1 002' gibi karmaşık dizilimleri de mutlaka 'Malzeme' sütununa yaz.`;
+3. Kritik Not: Malzeme kodları sadece '043.126' formatında değildir. Görseldeki '1810 0291', 'SP 551889', 'FT 344571-K01', '075.168/2SD', 'SP C8 D1 002' gibi karmaşık dizilimleri de mutlaka 'Malzeme' kodu olarak tanı.`;
 
         function handleFile(event) {
             const file = event.target.files[0];
