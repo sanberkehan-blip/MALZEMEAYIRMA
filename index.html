@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gemini SAP & Outlook Aktarım (Android)</title>
+    <title>Gemini Excel/E-Tablo Aktarımı</title>
     <style>
         body { 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
@@ -102,17 +102,17 @@
         
         .prompt-container { margin-top: 15px; text-align: left; display: none; }
         .prompt-label { font-size: 12px; font-weight: 600; color: #64748b; margin-bottom: 4px; display: block; }
-        .prompt-box { width: 100%; height: 80px; padding: 8px; font-size: 11px; border: 1px solid #cbd5e1; border-radius: 8px; background: #ffffff; color: #94a3b8; resize: none; box-sizing: border-box; }
+        .prompt-box { width: 100%; height: 90px; padding: 8px; font-size: 11px; border: 1px solid #cbd5e1; border-radius: 8px; background: #ffffff; color: #94a3b8; resize: none; box-sizing: border-box; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>Parça Listesi Aktarımı</h2>
+        <h2>Parça Listesi (Excel Aktarımı)</h2>
         <p>Görseli seçin, tek tıkla Gemini'ye gönderin.</p>
         
         <div class="upload-box" onclick="document.getElementById('fileInput').click()">
             <span class="upload-box-icon">📸</span>
-            <span class="upload-box-text">Fotoğraf Çek veya Seç (Android)</span>
+            <span class="upload-box-text">Fotoğraf Çek veya Seç</span>
         </div>
         <input type="file" id="fileInput" accept="image/*" onchange="handleFile(event)">
         
@@ -124,15 +124,14 @@
         <div class="error" id="errorMsg"></div>
 
         <div class="guide-box">
-            <div class="guide-title">📌 Android & SAP Kullanımı</div>
-            <div class="guide-step"><span class="step-num">1</span><span>Fotoğrafı yükleyip siyah butona basın. (SAP'ye özel komut kopyalanacaktır.)</span></div>
-            <div class="guide-step"><span class="step-num">2</span><span>Açılan Android paylaşım menüsünden <strong>Gemini</strong>'yi seçin.</span></div>
-            <div class="guide-step"><span class="step-num">3</span><span>Metin kutusuna basılı tutup <strong>Yapıştır</strong> diyerek gönderin.</span></div>
-            <div class="guide-step"><span class="step-num">4</span><span>Gemini size tablo çizmek yerine görünmez "Tab (Sekme)" boşlukları olan bir metin verecek. Bunu kopyalayıp Outlook'a yapıştırdığınızda SAP hücrelerine doğrudan oturacaktır.</span></div>
+            <div class="guide-title">📌 Excel Olarak Nasıl Paylaşılır?</div>
+            <div class="guide-step"><span class="step-num">1</span><span>Fotoğrafı yükleyip siyah butona basın ve Gemini uygulamasına gönderin.</span></div>
+            <div class="guide-step"><span class="step-num">2</span><span>Gemini size tabloyu verdikten sonra, tablonun altındaki veya sağ üstündeki <strong>"E-Tablolara Aktar"</strong> butonuna basın.</span></div>
+            <div class="guide-step"><span class="step-num">3</span><span>E-Tablo açıldığında sağ üstteki menüden <strong>Paylaş -> Excel Olarak Gönder (Outlook)</strong> seçeneğini kullanarak dosyayı mail atabilirsiniz.</span></div>
         </div>
 
         <div class="prompt-container" id="promptContainer">
-            <span class="prompt-label">SAP Uyumlu Prompt:</span>
+            <span class="prompt-label">E-Tablo Butonunu Zorlayan Prompt:</span>
             <textarea id="promptArea" class="prompt-box" readonly></textarea>
         </div>
     </div>
@@ -140,17 +139,15 @@
     <script>
         let currentFile = null;
 
-        // SAP ve Outlook için Markdown TABLO İPTAL EDİLDİ, TSV (Sekmeli Veri) ZORUNLU KILINDI
-        const promptText = `Aşağıdaki görselde yer alan yedek parça listesini incele.
-LÜTFEN TABLO (MARKDOWN) ÇİZME. Çıktıyı doğrudan SAP ve Excel'e yapıştırılmaya uygun, her sütun arasında "Sekme (Tab)" karakteri olan düz metin (TSV) formatında ver.
+        // E-Tablolara Aktar butonunu zorunlu kılacak katı formatlama
+        const promptText = `Aşağıdaki görselde yer alan yedek parça listesini incele. Çıktıyı doğrudan Google E-Tablolara aktarabilmem için KESİNLİKLE PÜRÜZSÜZ BİR MARKDOWN TABLOSU formatında ver. 
+Lütfen tablonun öncesinde veya sonrasında HİÇBİR AÇIKLAMA YAZMA. Sadece tabloyu ver.
 
-Başlık satırı ve altındaki veriler şu sırada olmalı (Aralarında KESİNLİKLE Sekme/Tab boşluğu kullan):
-Malzeme	Malzeme Adı	Adet	Fiyat
-
+Tablo şu 4 sütundan oluşmalı: "Malzeme", "Malzeme Adı", "Adet", "Fiyat".
 Kurallar:
-1. Görselde fiyat veya başka bir bilgi yoksa o kısmı silme, sadece boş bir Sekme (Tab) bırakarak geç.
+1. Görselde fiyat veya bilgi yoksa o hücreyi boş bırak, sütunu SİLME.
 2. Adet kısmını sadece sayı olarak yaz.
-3. Kritik Not: Malzeme kodları sadece '043.126' gibi standart formatta değildir. Görseldeki '1810 0291', 'SP 551889', 'FT 344571-K01', '075.168/2SD', 'SP C8 D1 002' gibi karmaşık dizilimleri de mutlaka 'Malzeme' kodu olarak tanı.`;
+3. Kritik: '043.126' gibi standart kodların yanı sıra, görseldeki '1810 0291', 'SP 551889', 'FT 344571-K01', '075.168/2SD', 'SP C8 D1 002' gibi karmaşık dizilimleri de mutlaka 'Malzeme' sütununa yaz.`;
 
         function handleFile(event) {
             const file = event.target.files[0];
