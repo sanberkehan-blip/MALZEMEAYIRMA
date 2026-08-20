@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gemini Hızlı Aktarım</title>
+    <title>Gemini SAP & Outlook Aktarım (Android)</title>
     <style>
         body { 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
@@ -25,17 +25,17 @@
         p { font-size: 14px; color: #64748b; margin: 0 0 20px 0; line-height: 1.4; }
         
         .upload-box { 
-            border: 2px dashed #3b82f6; 
+            border: 2px dashed #10b981; 
             border-radius: 12px; 
             padding: 30px 20px; 
-            background: #eff6ff; 
+            background: #ecfdf5; 
             cursor: pointer; 
             margin-bottom: 20px; 
             transition: background 0.2s;
         }
-        .upload-box:active { background: #dbeafe; }
+        .upload-box:active { background: #d1fae5; }
         .upload-box-icon { font-size: 32px; margin-bottom: 8px; display: block; }
-        .upload-box-text { font-weight: 600; color: #1d4ed8; font-size: 15px; }
+        .upload-box-text { font-weight: 600; color: #047857; font-size: 15px; }
         
         #fileInput { display: none; }
         
@@ -88,7 +88,6 @@
             line-height: 1.5;
         }
 
-        /* Yönerge Kutusu Stilleri */
         .guide-box {
             margin-top: 25px;
             background: #f8fafc;
@@ -97,63 +96,13 @@
             padding: 15px;
             text-align: left;
         }
-        .guide-title {
-            font-size: 14px;
-            font-weight: 700;
-            color: #334155;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .guide-step {
-            font-size: 13px;
-            color: #475569;
-            margin-bottom: 8px;
-            line-height: 1.5;
-            display: flex;
-            align-items: flex-start;
-            gap: 8px;
-        }
-        .step-num {
-            background: #3b82f6;
-            color: white;
-            border-radius: 50%;
-            width: 18px;
-            height: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 11px;
-            font-weight: bold;
-            flex-shrink: 0;
-            margin-top: 2px;
-        }
+        .guide-title { font-size: 14px; font-weight: 700; color: #334155; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+        .guide-step { font-size: 13px; color: #475569; margin-bottom: 8px; line-height: 1.5; display: flex; align-items: flex-start; gap: 8px; }
+        .step-num { background: #10b981; color: white; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; flex-shrink: 0; margin-top: 2px; }
         
-        .prompt-container {
-            margin-top: 15px;
-            text-align: left;
-            display: none;
-        }
-        .prompt-label {
-            font-size: 12px;
-            font-weight: 600;
-            color: #64748b;
-            margin-bottom: 4px;
-            display: block;
-        }
-        .prompt-box {
-            width: 100%;
-            height: 80px;
-            padding: 8px;
-            font-size: 11px;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            background: #ffffff;
-            color: #94a3b8;
-            resize: none;
-            box-sizing: border-box;
-        }
+        .prompt-container { margin-top: 15px; text-align: left; display: none; }
+        .prompt-label { font-size: 12px; font-weight: 600; color: #64748b; margin-bottom: 4px; display: block; }
+        .prompt-box { width: 100%; height: 80px; padding: 8px; font-size: 11px; border: 1px solid #cbd5e1; border-radius: 8px; background: #ffffff; color: #94a3b8; resize: none; box-sizing: border-box; }
     </style>
 </head>
 <body>
@@ -163,7 +112,7 @@
         
         <div class="upload-box" onclick="document.getElementById('fileInput').click()">
             <span class="upload-box-icon">📸</span>
-            <span class="upload-box-text">Fotoğraf Çek veya Seç</span>
+            <span class="upload-box-text">Fotoğraf Çek veya Seç (Android)</span>
         </div>
         <input type="file" id="fileInput" accept="image/*" onchange="handleFile(event)">
         
@@ -174,26 +123,16 @@
         <div class="status" id="statusMsg"></div>
         <div class="error" id="errorMsg"></div>
 
-        <!-- Kullanım Yönergesi -->
         <div class="guide-box">
-            <div class="guide-title">📌 Nasıl Kullanılır? (Özellikle iPhone için)</div>
-            
-            <div class="guide-step">
-                <span class="step-num">1</span>
-                <span>Fotoğrafı yükledikten sonra yukarıdaki siyah <strong>"🚀 Kopyala ve Paylaş"</strong> butonuna basın. (Gerekli tüm komutlar otomatik olarak telefonunuzun hafızasına kopyalanacaktır.)</span>
-            </div>
-            <div class="guide-step">
-                <span class="step-num">2</span>
-                <span>Ekranın altından telefonunuzun <strong>Paylaşım Menüsü</strong> açılacak. Uygulamalar listesini sağa doğru kaydırın. Eğer Gemini'yi göremiyorsanız en sağdaki <strong>"Daha Fazla (Üç Nokta)"</strong> simgesine tıklayıp Gemini'yi seçin.</span>
-            </div>
-            <div class="guide-step">
-                <span class="step-num">3</span>
-                <span>Gemini uygulaması açıldığında fotoğraf otomatik olarak eklenmiş olacak. Sadece alttaki <strong>mesaj yazma kutusuna basılı tutup "Yapıştır" deyin</strong> ve gönderin.</span>
-            </div>
+            <div class="guide-title">📌 Android & SAP Kullanımı</div>
+            <div class="guide-step"><span class="step-num">1</span><span>Fotoğrafı yükleyip siyah butona basın. (SAP'ye özel komut kopyalanacaktır.)</span></div>
+            <div class="guide-step"><span class="step-num">2</span><span>Açılan Android paylaşım menüsünden <strong>Gemini</strong>'yi seçin.</span></div>
+            <div class="guide-step"><span class="step-num">3</span><span>Metin kutusuna basılı tutup <strong>Yapıştır</strong> diyerek gönderin.</span></div>
+            <div class="guide-step"><span class="step-num">4</span><span>Gemini size tablo çizmek yerine görünmez "Tab (Sekme)" boşlukları olan bir metin verecek. Bunu kopyalayıp Outlook'a yapıştırdığınızda SAP hücrelerine doğrudan oturacaktır.</span></div>
         </div>
 
         <div class="prompt-container" id="promptContainer">
-            <span class="prompt-label">Arka planda kopyalanan komut (Görmeniz için):</span>
+            <span class="prompt-label">SAP Uyumlu Prompt:</span>
             <textarea id="promptArea" class="prompt-box" readonly></textarea>
         </div>
     </div>
@@ -201,27 +140,29 @@
     <script>
         let currentFile = null;
 
-        // Fiyat sütununu koruyan ve sıra dışı kodları tanıtan GÜNCEL PROMPT
-        const promptText = `Aşağıdaki görselde yer alan yedek parça listesini incele ve doğrudan e-tablolara yapıştırılmaya uygun bir tabloya dönüştür.
-Tabloyu KESİNLİKLE şu 4 sütun başlığıyla oluştur: "Malzeme", "Malzeme Adı", "Adet", "Fiyat".
-Görselde fiyat veya herhangi bir sütunun bilgisi yer almıyorsa o sütunu SİLME, sadece ilgili hücrelerin içini boş bırak.
-Adet kısmını sadece sayı olarak yaz ("ad", "adet" gibi ibareleri temizle).
-Kritik Not: Malzeme kodları sadece '043.126' gibi standart formatta değildir. Görseldeki '1810 0291', 'SP 551889', 'FT 344571-K01', '075.168/2SD', 'SP C8 D1 002' gibi boşluklu, harfli, tireli veya slash (/) içeren karmaşık dizilimleri de mutlaka 'Malzeme' kodu olarak tanı ve tabloya o şekilde aktar.`;
+        // SAP ve Outlook için Markdown TABLO İPTAL EDİLDİ, TSV (Sekmeli Veri) ZORUNLU KILINDI
+        const promptText = `Aşağıdaki görselde yer alan yedek parça listesini incele.
+LÜTFEN TABLO (MARKDOWN) ÇİZME. Çıktıyı doğrudan SAP ve Excel'e yapıştırılmaya uygun, her sütun arasında "Sekme (Tab)" karakteri olan düz metin (TSV) formatında ver.
+
+Başlık satırı ve altındaki veriler şu sırada olmalı (Aralarında KESİNLİKLE Sekme/Tab boşluğu kullan):
+Malzeme	Malzeme Adı	Adet	Fiyat
+
+Kurallar:
+1. Görselde fiyat veya başka bir bilgi yoksa o kısmı silme, sadece boş bir Sekme (Tab) bırakarak geç.
+2. Adet kısmını sadece sayı olarak yaz.
+3. Kritik Not: Malzeme kodları sadece '043.126' gibi standart formatta değildir. Görseldeki '1810 0291', 'SP 551889', 'FT 344571-K01', '075.168/2SD', 'SP C8 D1 002' gibi karmaşık dizilimleri de mutlaka 'Malzeme' kodu olarak tanı.`;
 
         function handleFile(event) {
             const file = event.target.files[0];
             if (!file) return;
-            
             currentFile = file;
             const preview = document.getElementById('preview');
             preview.src = URL.createObjectURL(file);
             preview.style.display = 'block';
-            
             document.getElementById('promptArea').value = promptText;
             document.getElementById('promptContainer').style.display = 'block';
             document.querySelector('.upload-box').style.display = 'none';
             document.getElementById('actionBtn').style.display = 'block';
-            
             document.getElementById('errorMsg').style.display = 'none';
             document.getElementById('statusMsg').style.display = 'none';
         }
@@ -253,39 +194,22 @@ Kritik Not: Malzeme kodları sadece '043.126' gibi standart formatta değildir. 
 
         async function processAndShare() {
             if (!currentFile) return;
-            
             const errorDiv = document.getElementById('errorMsg');
             const statusDiv = document.getElementById('statusMsg');
             errorDiv.style.display = 'none';
             statusDiv.style.display = 'none';
-
             let copied = false;
-            try {
-                await copyTextToClipboard(promptText);
-                copied = true;
-            } catch (e) {
-                copied = false;
-            }
-
+            try { await copyTextToClipboard(promptText); copied = true; } catch (e) { copied = false; }
             if (navigator.canShare && navigator.canShare({ files: [currentFile] })) {
                 try {
-                    statusDiv.innerHTML = copied 
-                        ? "✅ <strong>Komut (Prompt) başarıyla kopyalandı!</strong><br>Şimdi açılan menüden Gemini'yi seçin ve metin kutusuna <em>Yapıştır</em> deyin." 
-                        : "⚠️ Komut kopyalanamadı, lütfen alttaki kutudan elle kopyalayıp yapıştırın.";
+                    statusDiv.innerHTML = copied ? "✅ <strong>Komut başarıyla kopyalandı!</strong><br>Açılan menüden Gemini'yi seçin ve <em>Yapıştır</em> deyin." : "⚠️ Komut kopyalanamadı.";
                     statusDiv.style.display = 'block';
-
-                    await navigator.share({
-                        files: [currentFile],
-                        title: 'Parça Listesi'
-                    });
+                    await navigator.share({ files: [currentFile], title: 'Parça Listesi' });
                 } catch (err) {
-                    if (err.name !== 'AbortError') {
-                        errorDiv.innerHTML = "Paylaşım menüsü açılırken bir sorun oluştu: " + err.message;
-                        errorDiv.style.display = 'block';
-                    }
+                    if (err.name !== 'AbortError') { errorDiv.innerHTML = "Hata: " + err.message; errorDiv.style.display = 'block'; }
                 }
             } else {
-                errorDiv.innerHTML = "Cihazınız doğrudan paylaşım menüsünü desteklemiyor. Lütfen fotoğrafı manuel olarak Gemini'ye yükleyin.";
+                errorDiv.innerHTML = "Cihazınız paylaşım menüsünü desteklemiyor.";
                 errorDiv.style.display = 'block';
             }
         }
