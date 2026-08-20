@@ -33,7 +33,7 @@
 
             <div class="flex bg-slate-100 p-1 rounded-xl gap-1 text-xs font-semibold">
                 <button id="tabIphone" onclick="switchMode('iphone')" class="flex-1 py-2 px-3 rounded-lg transition-all text-slate-600 hover:text-slate-900">
-                     iPhone (Hızlı Mod)
+                     iPhone (Uygulama Seçme)
                 </button>
                 <button id="tabStandard" onclick="switchMode('standard')" class="flex-1 py-2 px-3 rounded-lg transition-all text-slate-600 hover:text-slate-900">
                     📸 Fotoğraf Yükleme Modu
@@ -41,36 +41,36 @@
             </div>
 
             <div id="iphoneModeView" class="space-y-4">
-                <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 text-left">
-                    <div class="flex items-center gap-2 text-amber-800 font-bold text-xs mb-1.5">
-                        <span>💡</span>
-                        <span>iPhone İçin En Hızlı Yöntem</span>
+                <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-4 text-left">
+                    <div class="flex items-center gap-2 text-indigo-900 font-bold text-xs mb-1.5">
+                        <span>📲</span>
+                        <span>iPhone Özel Modu (Fotoğrafsız Metin Aktarımı)</span>
                     </div>
-                    <p class="text-amber-900 text-xs leading-relaxed">
-                        Apple kısıtlamaları nedeniyle fotoğraflar web'den doğrudan Gemini uygulamasına iletilemez. Aşağıdaki butona dokunduğunuzda SAP uyumlu özel komut otomatik kopyalanır ve Gemini açılır.
+                    <p class="text-indigo-950 text-xs leading-relaxed">
+                        iOS kısıtlaması nedeniyle resim paylaşırken Gemini çıkmaz. Bu modda fotoğraf seçmeden doğrudan <b>Komutu Kopyala & Uygulama Seç</b> butonuna basın. Açılan iPhone menüsünde <b>Gemini</b> çıkacaktır!
                     </p>
                 </div>
 
                 <!-- Step Guide for iPhone -->
-                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-left space-y-2 text-xs">
-                    <div class="font-bold text-slate-700 uppercase text-[11px] tracking-wider mb-2">📌 iPhone 3 Adımda Aktarım:</div>
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-left space-y-2 text-xs">
+                    <div class="font-bold text-slate-700 uppercase text-[11px] tracking-wider mb-1">📌 iPhone Aktarım Adımları:</div>
                     <div class="flex items-start gap-2 text-slate-600">
                         <span class="bg-indigo-600 text-white font-bold rounded-full w-4 h-4 flex items-center justify-center text-[10px] shrink-0 mt-0.5">1</span>
-                        <span>Aşağıdaki <b>"Komutu Kopyala & Gemini'yi Aç"</b> butonuna dokunun.</span>
+                        <span><b>"Komutu Kopyala & Uygulama Seç"</b> butonuna dokunun.</span>
                     </div>
                     <div class="flex items-start gap-2 text-slate-600">
                         <span class="bg-indigo-600 text-white font-bold rounded-full w-4 h-4 flex items-center justify-center text-[10px] shrink-0 mt-0.5">2</span>
-                        <span>Gemini açılınca sol alttaki <b>(+)</b> butonuna basıp parça fotoğrafını çekin veya galeriden seçin.</span>
+                        <span>Açılan iPhone menüsünden <b>Gemini</b> uygulamasını seçin.</span>
                     </div>
                     <div class="flex items-start gap-2 text-slate-600">
                         <span class="bg-indigo-600 text-white font-bold rounded-full w-4 h-4 flex items-center justify-center text-[10px] shrink-0 mt-0.5">3</span>
-                        <span>Mesaj kutusuna basılı tutup <b>Yapıştır</b> deyin ve gönderin. İndirilebilir Excel (.xlsx) dosyanız hazır!</span>
+                        <span>Gemini açılınca <b>(+) / Kamera</b> butonuna basıp parçanın fotoğrafını ekleyin, mesaja <b>Yapıştır</b> deyin.</span>
                     </div>
                 </div>
 
-                <button onclick="copyAndOpenGemini()" class="w-full bg-indigo-600 hover:bg-indigo-700 active:scale-[0.99] text-white font-semibold py-4 px-4 rounded-xl shadow-lg shadow-indigo-200 transition-all text-sm flex items-center justify-center gap-2">
-                    <span class="text-lg">📱</span>
-                    <span>Komutu Kopyala & Gemini'yi Aç</span>
+                <button onclick="copyAndOpenIphoneShare()" class="w-full bg-indigo-600 hover:bg-indigo-700 active:scale-[0.99] text-white font-semibold py-3.5 px-4 rounded-xl shadow-lg shadow-indigo-200 transition-all text-sm flex items-center justify-center gap-2">
+                    <span class="text-lg">📲</span>
+                    <span>Komutu Kopyala & Uygulama Seç</span>
                 </button>
             </div>
 
@@ -218,20 +218,32 @@ Kurallar:
             return false;
         }
 
-        async function copyAndOpenGemini() {
+        async function copyAndOpenIphoneShare() {
+            // Panoya kopyala
             const copied = await copyPromptToClipboard();
-            
-            showToast(
-                copied 
-                    ? "✅ <b>Komut kopyalandı!</b><br>Gemini açılıyor... Fotoğrafı çekip/seçip mesaj kutusuna <i>Yapıştır</i> deyin." 
-                    : "⚠️ Komut otomatik kopyalanamadı. Lütfen aşağıdaki kutudan kopyalayınız.",
-                copied ? "success" : "error"
-            );
 
-            setTimeout(() => {
-                // Open Gemini app via web/universal link
-                window.location.href = 'https://gemini.google.com/app';
-            }, 1000);
+            if (navigator.share) {
+                try {
+                    showToast(
+                        copied 
+                            ? "✅ <b>Komut kopyalandı!</b><br>Menüden <b>Gemini</b>'yi seçin, açılınca resminizi ekleyip mesaja <i>Yapıştır</i> deyin." 
+                            : "⚠️ Komut kopyalanamadı.",
+                        copied ? "success" : "error"
+                    );
+
+                    // iPhone'da Gemini'nin görünmesini sağlayan SADECE METIN paylaşımı
+                    await navigator.share({
+                        title: 'Sampa Parça Aktarımı',
+                        text: systemPrompt
+                    });
+                } catch (err) {
+                    if (err.name !== 'AbortError') {
+                        showToast("Uygulama seçme menüsü açılırken hata oluştu: " + err.message, "error");
+                    }
+                }
+            } else {
+                showToast("Cihazınızda uygulama paylaşım menüsü desteklenmiyor.", "error");
+            }
         }
 
         function handleFileSelect(event) {
