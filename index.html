@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gemini Direkt Excel İndirme</title>
+    <title>Gemini Web Yönlendirmeli Aktarım</title>
     <style>
         body { 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
@@ -25,17 +25,17 @@
         p { font-size: 14px; color: #64748b; margin: 0 0 20px 0; line-height: 1.4; }
         
         .upload-box { 
-            border: 2px dashed #8b5cf6; 
+            border: 2px dashed #f59e0b; 
             border-radius: 12px; 
             padding: 30px 20px; 
-            background: #f5f3ff; 
+            background: #fffbeb; 
             cursor: pointer; 
             margin-bottom: 20px; 
             transition: background 0.2s;
         }
-        .upload-box:active { background: #ede9fe; }
+        .upload-box:active { background: #fef3c7; }
         .upload-box-icon { font-size: 32px; margin-bottom: 8px; display: block; }
-        .upload-box-text { font-weight: 600; color: #6d28d9; font-size: 15px; }
+        .upload-box-text { font-weight: 600; color: #d97706; font-size: 15px; }
         
         #fileInput { display: none; }
         
@@ -98,7 +98,7 @@
         }
         .guide-title { font-size: 14px; font-weight: 700; color: #334155; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
         .guide-step { font-size: 13px; color: #475569; margin-bottom: 8px; line-height: 1.5; display: flex; align-items: flex-start; gap: 8px; }
-        .step-num { background: #8b5cf6; color: white; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; flex-shrink: 0; margin-top: 2px; }
+        .step-num { background: #f59e0b; color: white; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; flex-shrink: 0; margin-top: 2px; }
         
         .prompt-container { margin-top: 15px; text-align: left; display: none; }
         .prompt-label { font-size: 12px; font-weight: 600; color: #64748b; margin-bottom: 4px; display: block; }
@@ -107,31 +107,31 @@
 </head>
 <body>
     <div class="container">
-        <h2>Parça Listesi (Direkt İndirilebilir)</h2>
-        <p>Görseli seçin, doğrudan Excel (.xlsx) dosyası alın.</p>
+        <h2>Parça Listesi (Web Yönlendirme)</h2>
+        <p>Telefondaki paylaşım sorunlarını aşan web çözümü.</p>
         
         <div class="upload-box" onclick="document.getElementById('fileInput').click()">
-            <span class="upload-box-icon">📊</span>
-            <span class="upload-box-text">Fotoğraf Çek veya Seç</span>
+            <span class="upload-box-icon">🌐</span>
+            <span class="upload-box-text">Önce Fotoğrafı Çek (Galeride Dursun)</span>
         </div>
         <input type="file" id="fileInput" accept="image/*" onchange="handleFile(event)">
         
         <img id="preview" src="" alt="Önizleme">
         
-        <button class="btn-action" id="actionBtn" onclick="processAndShare()">🚀 Kopyala ve Paylaş Menüsünü Aç</button>
+        <button class="btn-action" id="actionBtn" onclick="processAndShare()">🚀 Komutu Kopyala ve Gemini Web'i Aç</button>
         
         <div class="status" id="statusMsg"></div>
         <div class="error" id="errorMsg"></div>
 
         <div class="guide-box">
-            <div class="guide-title">📌 Dosya Olarak Nasıl Alınır?</div>
-            <div class="guide-step"><span class="step-num">1</span><span>Fotoğrafı yükleyip siyah butona basın ve Gemini'ye gönderin.</span></div>
-            <div class="guide-step"><span class="step-num">2</span><span>Yeni komut sayesinde yapay zeka ekrana tablo çizmek yerine doğrudan arka planda bir Excel dosyası oluşturacaktır.</span></div>
-            <div class="guide-step"><span class="step-num">3</span><span>Size verdiği linke veya butona tıklayarak .xlsx dosyanızı indirebilir ve anında Outlook'tan paylaşabilirsiniz.</span></div>
+            <div class="guide-title">📌 Kesin Çözüm: Nasıl Kullanılır?</div>
+            <div class="guide-step"><span class="step-num">1</span><span>Fotoğrafı seçtikten sonra yukarıdaki butona basın. Sistem komutu kopyalayıp sizi tarayıcıda doğrudan Gemini'ye yönlendirecektir.</span></div>
+            <div class="guide-step"><span class="step-num">2</span><span>Açılan Gemini sekmesinde '+' ikonuna basarak <strong>fotoğrafı galerinizden kendiniz ekleyin.</strong></span></div>
+            <div class="guide-step"><span class="step-num">3</span><span>Metin kutusuna basılı tutup <strong>"Yapıştır"</strong> deyin ve gönderin. Tablo gelince sağ alttaki E-Tablolara aktar butonu ile excel dosyanızı alabilirsiniz.</span></div>
         </div>
 
         <div class="prompt-container" id="promptContainer">
-            <span class="prompt-label">Direkt İndirme Sağlayan Prompt:</span>
+            <span class="prompt-label">Hafızaya Alınan Komut:</span>
             <textarea id="promptArea" class="prompt-box" readonly></textarea>
         </div>
     </div>
@@ -139,15 +139,15 @@
     <script>
         let currentFile = null;
 
-        // Direkt dosya oluşturmayı zorlayan komut
-        const promptText = `Aşağıdaki görselde yer alan yedek parça listesini incele. LÜTFEN EKRANA TABLO VEYA METİN YAZMA. 
-Bunun yerine, kod/veri analizi yeteneklerini kullanarak bu verileri bir Excel (.xlsx) dosyasına dönüştür ve bana DOĞRUDAN İNDİRİLEBİLİR EXCEL DOSYASI linki ver.
+        // E-Tablolara Aktar butonunu zorunlu kılacak katı formatlama
+        const promptText = `Aşağıdaki görselde yer alan yedek parça listesini incele. Çıktıyı doğrudan Google E-Tablolara aktarabilmem için KESİNLİKLE PÜRÜZSÜZ BİR MARKDOWN TABLOSU formatında ver. 
+Lütfen tablonun öncesinde veya sonrasında HİÇBİR AÇIKLAMA YAZMA. Sadece tabloyu ver.
 
-Excel dosyasındaki sütunlar KESİNLİKLE şu şekilde olmalı: "Malzeme", "Malzeme Adı", "Adet", "Fiyat".
+Tablo şu 4 sütundan oluşmalı: "Malzeme", "Malzeme Adı", "Adet", "Fiyat".
 Kurallar:
-1. Görselde fiyat veya bilgi yoksa o hücreyi boş bırak.
+1. Görselde fiyat veya bilgi yoksa o hücreyi boş bırak, sütunu SİLME.
 2. Adet kısmını sadece sayı olarak yaz.
-3. Kritik Not: Malzeme kodları sadece '043.126' formatında değildir. Görseldeki '1810 0291', 'SP 551889', 'FT 344571-K01', '075.168/2SD', 'SP C8 D1 002' gibi karmaşık dizilimleri de mutlaka 'Malzeme' kodu olarak tanı.`;
+3. Kritik: '043.126' gibi standart kodların yanı sıra, görseldeki '1810 0291', 'SP 551889', 'FT 344571-K01', '075.168/2SD', 'SP C8 D1 002' gibi karmaşık dizilimleri de mutlaka 'Malzeme' sütununa yaz.`;
 
         function handleFile(event) {
             const file = event.target.files[0];
@@ -195,18 +195,25 @@ Kurallar:
             const statusDiv = document.getElementById('statusMsg');
             errorDiv.style.display = 'none';
             statusDiv.style.display = 'none';
+            
             let copied = false;
-            try { await copyTextToClipboard(promptText); copied = true; } catch (e) { copied = false; }
-            if (navigator.canShare && navigator.canShare({ files: [currentFile] })) {
-                try {
-                    statusDiv.innerHTML = copied ? "✅ <strong>Komut başarıyla kopyalandı!</strong><br>Açılan menüden Gemini'yi seçin ve <em>Yapıştır</em> deyin." : "⚠️ Komut kopyalanamadı.";
-                    statusDiv.style.display = 'block';
-                    await navigator.share({ files: [currentFile], title: 'Parça Listesi' });
-                } catch (err) {
-                    if (err.name !== 'AbortError') { errorDiv.innerHTML = "Hata: " + err.message; errorDiv.style.display = 'block'; }
-                }
+            try { 
+                await copyTextToClipboard(promptText); 
+                copied = true; 
+            } catch (e) { 
+                copied = false; 
+            }
+            
+            if (copied) {
+                statusDiv.innerHTML = "✅ <strong>Komut başarıyla kopyalandı!</strong><br>Şimdi tarayıcıda Gemini açılıyor... Lütfen fotoğrafı galeriden ekleyip komutu yapıştırın.";
+                statusDiv.style.display = 'block';
+                
+                // Telefonlarda kopyalama uyarısının okunabilmesi için ufak bir gecikme
+                setTimeout(() => {
+                    window.open('https://gemini.google.com/app', '_blank');
+                }, 1200);
             } else {
-                errorDiv.innerHTML = "Cihazınız paylaşım menüsünü desteklemiyor.";
+                errorDiv.innerHTML = "⚠️ Komut kopyalanamadı. Lütfen metni aşağıdaki kutudan kopyalayıp <a href='https://gemini.google.com/app' target='_blank'>buraya tıklayarak</a> Gemini'ye gidin.";
                 errorDiv.style.display = 'block';
             }
         }
