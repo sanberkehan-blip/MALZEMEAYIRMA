@@ -3,252 +3,280 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gemini Uygulaması - Direkt Excel</title>
+    <title>Sampa Parça Aktarımı - Gemini Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
-            background-color: #f8f9fa; 
-            margin: 0; 
-            padding: 20px; 
-            text-align: center; 
-            color: #212529; 
-        }
-        .container { 
-            max-width: 450px; 
-            margin: 10px auto; 
-            background: #ffffff; 
-            padding: 25px 20px; 
-            border-radius: 16px; 
-            box-shadow: 0 4px 24px rgba(0,0,0,0.08); 
-        }
-        h2 { font-size: 22px; margin: 0 0 8px 0; color: #0f172a; }
-        p { font-size: 14px; color: #64748b; margin: 0 0 20px 0; line-height: 1.4; }
-        
-        .upload-box { 
-            border: 2px dashed #8b5cf6; 
-            border-radius: 12px; 
-            padding: 30px 20px; 
-            background: #f5f3ff; 
-            cursor: pointer; 
-            margin-bottom: 20px; 
-            transition: background 0.2s;
-        }
-        .upload-box:active { background: #ede9fe; }
-        .upload-box-icon { font-size: 32px; margin-bottom: 8px; display: block; }
-        .upload-box-text { font-weight: 600; color: #6d28d9; font-size: 15px; }
-        
-        #fileInput { display: none; }
-        
-        #preview { 
-            max-width: 100%; 
-            max-height: 250px; 
-            border-radius: 8px; 
-            display: none; 
-            margin: 0 auto 15px auto; 
-            object-fit: contain; 
-            border: 1px solid #e2e8f0;
-        }
-        
-        .btn-action { 
-            background: #0f172a; 
-            color: #ffffff; 
-            border: none; 
-            padding: 16px 20px; 
-            font-size: 16px; 
-            font-weight: 600; 
-            border-radius: 12px; 
-            width: 100%; 
-            cursor: pointer; 
-            display: none; 
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        .btn-action:active { background: #1e293b; transform: scale(0.98); }
-        
-        .status { 
-            margin-top: 15px; 
-            font-size: 14px; 
-            color: #065f46; 
-            display: none; 
-            font-weight: 500; 
-            background: #d1fae5; 
-            padding: 12px; 
-            border-radius: 8px;
-            text-align: left;
-            line-height: 1.5;
-        }
-        .error { 
-            color: #b91c1c; 
-            font-size: 14px; 
-            margin-top: 15px; 
-            background: #fee2e2; 
-            padding: 12px; 
-            border-radius: 8px;
-            display: none;
-            text-align: left;
-            line-height: 1.5;
-        }
-
-        .guide-box {
-            margin-top: 25px;
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 15px;
-            text-align: left;
-        }
-        .guide-title { font-size: 14px; font-weight: 700; color: #334155; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
-        .guide-step { font-size: 13px; color: #475569; margin-bottom: 8px; line-height: 1.5; display: flex; align-items: flex-start; gap: 8px; }
-        .step-num { background: #8b5cf6; color: white; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; flex-shrink: 0; margin-top: 2px; }
-        
-        /* IPHONE ÖZEL UYARI KUTUSU */
-        .ios-warning {
-            display: none;
-            margin-bottom: 20px;
-            background: #fff0f2;
-            border: 2px solid #ffe4e6;
-            border-left: 4px solid #e11d48;
-            border-radius: 8px;
-            padding: 15px;
-            text-align: left;
-        }
-        .ios-warning-title { font-size: 15px; font-weight: 700; color: #be123c; margin-bottom: 8px; }
-        .ios-warning-text { font-size: 13px; color: #881337; line-height: 1.4; margin-bottom: 10px;}
-        .ios-warning-list { font-size: 13px; color: #881337; margin: 0; padding-left: 20px; line-height: 1.5;}
-        
-        .prompt-container { margin-top: 15px; text-align: left; display: none; }
-        .prompt-label { font-size: 12px; font-weight: 600; color: #64748b; margin-bottom: 4px; display: block; }
-        .prompt-box { width: 100%; height: 90px; padding: 8px; font-size: 11px; border: 1px solid #cbd5e1; border-radius: 8px; background: #ffffff; color: #94a3b8; resize: none; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; }
     </style>
 </head>
-<body>
-    <div class="container">
-        <h2>Parça Listesi Aktarımı</h2>
-        <p>Görseli seçin, fotoğraf direkt Gemini'ye gitsin.</p>
+<body class="bg-slate-50 min-h-screen text-slate-800 p-4 sm:p-6 flex items-center justify-center">
+
+    <div class="w-full max-w-lg bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden my-auto">
         
-        <!-- IPHONE ÖZEL UYARISI -->
-        <div class="ios-warning" id="iosWarningBox">
-            <div class="ios-warning-title">⚠️ iPhone Kullanıcıları İçin İlk Ayar</div>
-            <div class="ios-warning-text">Paylaşım menüsünde Gemini'yi göremiyorsanız, sadece <b>tek seferlik</b> şu ayarı yapın:</div>
-            <ul class="ios-warning-list">
-                <li>Butona basınca açılan menüyü <b>en sağa</b> kaydırıp <b>Daha Fazla (...)</b> ikonuna tıklayın.</li>
-                <li>Sağ üstteki <b>Düzenle</b> butonuna basın.</li>
-                <li>Gemini'nin yanındaki yeşil <b>(+)</b> ikonuna basıp onu en üste sabitleyin.</li>
-            </ul>
-            <div class="ios-warning-text" style="margin-top: 8px; font-weight:bold;">Bunu bir kere yaptığınızda artık hep en önde çıkacaktır!</div>
+        <div class="bg-slate-900 text-white p-6 text-center relative">
+            <div class="inline-flex items-center justify-center w-12 h-12 bg-indigo-600 text-white rounded-xl mb-3 shadow-lg shadow-indigo-500/30 text-2xl">
+                📊
+            </div>
+            <h1 class="text-xl font-bold tracking-tight">Sampa Parça Aktarımı</h1>
+            <p class="text-slate-400 text-xs mt-1">Görselden Doğrudan İndirilebilir Excel (.xlsx) Üretimi</p>
         </div>
 
-        <div class="upload-box" onclick="document.getElementById('fileInput').click()">
-            <span class="upload-box-icon">📸</span>
-            <span class="upload-box-text">Fotoğraf Çek veya Seç</span>
-        </div>
-        <input type="file" id="fileInput" accept="image/*" onchange="handleFile(event)">
-        
-        <img id="preview" src="" alt="Önizleme">
-        
-        <button class="btn-action" id="actionBtn" onclick="processAndShare()">🚀 Komutu Kopyala ve Paylaş</button>
-        
-        <div class="status" id="statusMsg"></div>
-        <div class="error" id="errorMsg"></div>
+        <div class="p-5 sm:p-6 space-y-5">
 
-        <div class="guide-box">
-            <div class="guide-title">📌 Dosya Olarak Nasıl Alınır?</div>
-            <div class="guide-step"><span class="step-num">1</span><span>Fotoğrafı seçtikten sonra butona basın. Sistem komutu kopyalayıp paylaşım menüsünü açacaktır.</span></div>
-            <div class="guide-step"><span class="step-num">2</span><span>Açılan menüden doğrudan <strong>Gemini uygulamasını</strong> seçin (Fotoğraf otomatik eklenecektir).</span></div>
-            <div class="guide-step"><span class="step-num">3</span><span>Mesaj kutusuna <strong>"Yapıştır"</strong> deyip gönderdiğinizde, yapay zeka size indirilebilir .xlsx dosyasını verecektir.</span></div>
-        </div>
+            <div id="iosWarningBox" class="hidden bg-rose-50 border-2 border-rose-200 border-l-4 border-l-rose-600 rounded-xl p-4 text-left">
+                <div class="flex items-center gap-2 text-rose-700 font-bold text-sm mb-1">
+                    <span>⚠️</span>
+                    <span>iPhone Kullanıcıları İçin İlk Ayar</span>
+                </div>
+                <p class="text-rose-900 text-xs leading-relaxed mb-2">
+                    Paylaşım menüsünde Gemini'yi göremiyorsanız, sadece <b>tek seferlik</b> şu ayarı yapın:
+                </p>
+                <ol class="list-decimal list-inside text-xs text-rose-800 space-y-1 font-medium">
+                    <li>Butona basınca açılan menüyü <b>en sağa</b> kaydırıp <b>Daha Fazla (...)</b> ikonuna tıklayın.</li>
+                    <li>Sağ üstteki <b>Düzenle</b> butonuna basın.</li>
+                    <li>Gemini'nin yanındaki yeşil <b>(+)</b> ikonuna basıp en üste sabitleyin.</li>
+                </ol>
+            </div>
 
-        <div class="prompt-container" id="promptContainer">
-            <span class="prompt-label">Hafızaya Alınan Excel Komutu:</span>
-            <textarea id="promptArea" class="prompt-box" readonly></textarea>
+            <div id="uploadBox" onclick="document.getElementById('fileInput').click()" 
+                 class="border-2 border-dashed border-indigo-400 hover:border-indigo-600 bg-indigo-50/50 hover:bg-indigo-50 transition-all rounded-xl p-6 text-center cursor-pointer group">
+                <div class="text-4xl mb-2 group-hover:scale-110 transition-transform">📸</div>
+                <div class="font-semibold text-indigo-700 text-sm sm:text-base">Fotoğraf Çek veya Galeriden Seç</div>
+                <p class="text-slate-500 text-xs mt-1">Parça listesi görselini yükleyin</p>
+            </div>
+            <input type="file" id="fileInput" accept="image/*" class="hidden" onchange="handleFileSelect(event)">
+
+            <div id="previewContainer" class="hidden text-center">
+                <img id="imagePreview" src="" alt="Önizleme" class="max-h-56 mx-auto rounded-lg border border-slate-200 shadow-sm object-contain mb-3">
+                <button onclick="resetFile()" class="text-xs text-rose-600 hover:text-rose-700 font-medium underline">
+                    Farklı Fotoğraf Seç
+                </button>
+            </div>
+
+            <div id="actionButtons" class="hidden space-y-3">
+                <!-- Mobile App Share Button -->
+                <button onclick="processAndShareApp()" class="w-full bg-indigo-600 hover:bg-indigo-700 active:scale-[0.99] text-white font-semibold py-3.5 px-4 rounded-xl shadow-md shadow-indigo-200 transition-all text-sm flex items-center justify-center gap-2">
+                    <span>📱</span>
+                    <span>Gemini Uygulaması ile Aç (Mobil)</span>
+                </button>
+
+                <!-- Web / Desktop Direct Button -->
+                <button onclick="processAndOpenWeb()" class="w-full bg-slate-900 hover:bg-slate-800 active:scale-[0.99] text-white font-semibold py-3 px-4 rounded-xl shadow-md transition-all text-sm flex items-center justify-center gap-2">
+                    <span>🌐</span>
+                    <span>Gemini Web ile Aç (Masaüstü / Web)</span>
+                </button>
+            </div>
+
+            <div id="toastMessage" class="hidden p-3.5 rounded-xl text-xs font-medium text-left leading-relaxed"></div>
+
+            <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-left">
+                <h3 class="text-xs font-bold text-slate-700 mb-2 uppercase tracking-wider flex items-center gap-1.5">
+                    <span>📌</span> Nasıl Çalışır?
+                </h3>
+                <div class="space-y-2 text-xs text-slate-600">
+                    <div class="flex items-start gap-2">
+                        <span class="bg-indigo-100 text-indigo-700 font-bold rounded-full w-4 h-4 flex items-center justify-center text-[10px] shrink-0 mt-0.5">1</span>
+                        <span>Fotoğrafı seçin ve istediğiniz aktarım moduna dokunun.</span>
+                    </div>
+                    <div class="flex items-start gap-2">
+                        <span class="bg-indigo-100 text-indigo-700 font-bold rounded-full w-4 h-4 flex items-center justify-center text-[10px] shrink-0 mt-0.5">2</span>
+                        <span>Sistem özel SAP uyumlu promptu arka planda kopyalar.</span>
+                    </div>
+                    <div class="flex items-start gap-2">
+                        <span class="bg-indigo-100 text-indigo-700 font-bold rounded-full w-4 h-4 flex items-center justify-center text-[10px] shrink-0 mt-0.5">3</span>
+                        <span>Gemini açıldığında metin kutusuna <b>Yapıştır</b> deyin. Yapay zeka doğrudan indirilebilir <b>.xlsx</b> dosyasını üretecektir.</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="promptContainer" class="hidden text-left">
+                <div class="flex items-center justify-between mb-1">
+                    <label class="block text-xs font-semibold text-slate-500">Otomatik Kopyalanan Komut:</label>
+                    <button onclick="manualCopyPrompt()" class="text-[11px] text-indigo-600 hover:text-indigo-800 font-bold underline">
+                        Elle Kopyala 📋
+                    </button>
+                </div>
+                <textarea id="promptBox" readonly onclick="this.select();" class="w-full h-24 p-2.5 text-xs bg-slate-100 border border-slate-200 rounded-lg text-slate-600 resize-none font-mono focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+            </div>
+
         </div>
     </div>
 
     <script>
-        // Cihazın iOS olup olmadığını kontrol et
+        // Cihaz ve İşletim Sistemi Tespiti
         const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
         
         if (isIOS) {
-            document.getElementById('iosWarningBox').style.display = 'block';
+            document.getElementById('iosWarningBox').classList.remove('hidden');
         }
 
-        let currentFile = null;
+        let selectedFile = null;
 
-        const promptText = `Aşağıdaki görselde yer alan yedek parça listesini incele. LÜTFEN EKRANA TABLO VEYA METİN YAZMA. 
-Bunun yerine, arka planda kod çalıştırarak bu verileri bir Excel (.xlsx) dosyasına dönüştür ve bana DOĞRUDAN İNDİRİLEBİLİR EXCEL DOSYASI linki ver.
+        // SAP & Excel Uyumlu Kesin Komut
+        const systemPrompt = `Aşağıdaki görselde yer alan yedek parça listesini incele. LÜTFEN EKRANA TABLO VEYA METİN YAZMA.
+Bunun yerine, arka planda Python/kod çalıştırarak bu verileri doğrudan bir Excel (.xlsx) dosyasına dönüştür ve bana İNDİRİLEBİLİR EXCEL DOSYASI (.xlsx) linki ver.
 
 Excel dosyasındaki sütunlar KESİNLİKLE şu şekilde olmalı: "Malzeme", "Malzeme Adı", "Adet", "Fiyat".
 Kurallar:
-1. Görselde fiyat veya bilgi yoksa o hücreyi boş bırak.
-2. Adet kısmını sadece sayı olarak yaz.
-3. Kritik Not: Malzeme kodları sadece '043.126' formatında değildir. Görseldeki '1810 0291', 'SP 551889', 'FT 344571-K01', '075.168/2SD', 'SP C8 D1 002' gibi karmaşık dizilimleri de mutlaka 'Malzeme' kodu olarak tanı.`;
+1. Görselde fiyat veya bilgi yoksa o hücreyi boş bırak, sütunu SİLME.
+2. Adet kısmını sadece sayı olarak yaz ('ad', 'adet' ibarelerini sil).
+3. Kritik Not: Malzeme kodları sadece '043.126' formatında değildir. Görseldeki '1810 0291', 'SP 551889', 'FT 344571-K01', '075.168/2SD', 'SP C8 D1 002', '030.274-01', '008.033A' gibi karmaşık, boşluklu veya harfli dizilimleri de mutlaka 'Malzeme' kodu olarak tanı.`;
 
-        function handleFile(event) {
+        function handleFileSelect(event) {
             const file = event.target.files[0];
             if (!file) return;
-            currentFile = file;
-            const preview = document.getElementById('preview');
-            preview.src = URL.createObjectURL(file);
-            preview.style.display = 'block';
-            document.getElementById('promptArea').value = promptText;
-            document.getElementById('promptContainer').style.display = 'block';
-            document.querySelector('.upload-box').style.display = 'none';
-            document.getElementById('actionBtn').style.display = 'block';
-            document.getElementById('errorMsg').style.display = 'none';
-            document.getElementById('statusMsg').style.display = 'none';
+
+            selectedFile = file;
+            const previewImg = document.getElementById('imagePreview');
+            previewImg.src = URL.createObjectURL(file);
+
+            document.getElementById('uploadBox').classList.add('hidden');
+            document.getElementById('previewContainer').classList.remove('hidden');
+            document.getElementById('actionButtons').classList.remove('hidden');
+
+            document.getElementById('promptBox').value = systemPrompt;
+            document.getElementById('promptContainer').classList.remove('hidden');
+
+            hideToast();
         }
 
-        function copyTextToClipboard(text) {
+        function resetFile() {
+            selectedFile = null;
+            document.getElementById('fileInput').value = '';
+            document.getElementById('uploadBox').classList.remove('hidden');
+            document.getElementById('previewContainer').classList.add('hidden');
+            document.getElementById('promptContainer').classList.add('hidden');
+            hideToast();
+        }
+
+        async function copyPromptToClipboard() {
+            // Level 1: Modern Clipboard API (Requires secure context & user gesture)
             if (navigator.clipboard && window.isSecureContext) {
-                return navigator.clipboard.writeText(text).catch(() => fallbackCopy(text));
+                try {
+                    await navigator.clipboard.writeText(systemPrompt);
+                    return true;
+                } catch (e) {
+                    console.warn("navigator.clipboard failed, attempting fallback...", e);
+                }
             }
-            return fallbackCopy(text);
-        }
 
-        function fallbackCopy(text) {
+            // Level 2: Textarea DOM selection method (iOS Safari & HTTP fallback compatible)
             try {
                 const textArea = document.createElement("textarea");
-                textArea.value = text;
+                textArea.value = systemPrompt;
+                // Prevent scrolling to bottom on mobile
                 textArea.style.position = "fixed";
-                textArea.style.left = "-9999px";
-                textArea.style.top = "-9999px";
+                textArea.style.top = "0";
+                textArea.style.left = "0";
+                textArea.style.width = "2em";
+                textArea.style.height = "2em";
+                textArea.style.padding = "0";
+                textArea.style.border = "none";
+                textArea.style.outline = "none";
+                textArea.style.boxShadow = "none";
+                textArea.style.background = "transparent";
                 document.body.appendChild(textArea);
+                
                 textArea.focus();
                 textArea.select();
-                const success = document.execCommand('copy');
+                
+                // Crucial for iOS Safari selection
+                textArea.setSelectionRange(0, 999999);
+
+                const successful = document.execCommand('copy');
                 document.body.removeChild(textArea);
-                return success ? Promise.resolve() : Promise.reject();
+                if (successful) return true;
             } catch (err) {
-                return Promise.reject(err);
+                console.warn("execCommand fallback failed:", err);
+            }
+
+            // Level 3: Select from visible promptBox directly
+            try {
+                const promptBox = document.getElementById('promptBox');
+                promptBox.focus();
+                promptBox.select();
+                promptBox.setSelectionRange(0, 999999);
+                const successful = document.execCommand('copy');
+                if (successful) return true;
+            } catch (err) {
+                console.warn("Visible element copy failed:", err);
+            }
+
+            return false;
+        }
+
+        async function manualCopyPrompt() {
+            const success = await copyPromptToClipboard();
+            if (success) {
+                showToast("✅ Komut kopyalandı! Gemini ekranına yapıştırabilirsiniz.", "success");
+            } else {
+                showToast("⚠️ Otomatik kopyalanamadı. Lütfen aşağıdaki kutucuktaki metni seçip kopyalayın.", "error");
             }
         }
 
-        async function processAndShare() {
-            if (!currentFile) return;
-            const errorDiv = document.getElementById('errorMsg');
-            const statusDiv = document.getElementById('statusMsg');
-            errorDiv.style.display = 'none';
-            statusDiv.style.display = 'none';
-            
-            let copied = false;
-            try { 
-                await copyTextToClipboard(promptText); 
-                copied = true; 
-            } catch (e) { 
-                copied = false; 
+        async function processAndShareApp() {
+            if (!selectedFile) {
+                showToast("⚠️ Lütfen önce bir görsel yükleyin.", "error");
+                return;
             }
-            
-            if (navigator.canShare && navigator.canShare({ files: [currentFile] })) {
+
+            // Trigger copy synchronously in gesture stack
+            const copied = await copyPromptToClipboard();
+
+            if (navigator.canShare && navigator.canShare({ files: [selectedFile] })) {
                 try {
-                    statusDiv.innerHTML = copied ? "✅ <strong>Komut başarıyla kopyalandı!</strong><br>Açılan menüden Gemini uygulamasını seçin ve <em>Yapıştır</em> deyin." : "⚠️ Komut kopyalanamadı.";
-                    statusDiv.style.display = 'block';
-                    await navigator.share({ files: [currentFile], title: 'Parça Listesi' });
+                    showToast(
+                        copied 
+                            ? "✅ <b>Komut kopyalandı!</b><br>Açılan menüden Gemini uygulamasını seçip <i>Yapıştır</i> deyin." 
+                            : "⚠️ Komut kopyalanamadı, aşağıdaki kutudan elle kopyalayabilirsiniz.",
+                        copied ? "success" : "error"
+                    );
+
+                    await navigator.share({
+                        files: [selectedFile],
+                        title: 'Parça Listesi'
+                    });
                 } catch (err) {
-                    if (err.name !== 'AbortError') { errorDiv.innerHTML = "Hata: " + err.message; errorDiv.style.display = 'block'; }
+                    if (err.name !== 'AbortError') {
+                        showToast("Paylaşım menüsü açılırken bir hata oluştu: " + err.message, "error");
+                    }
                 }
             } else {
-                errorDiv.innerHTML = "Cihazınız paylaşım menüsünü desteklemiyor.";
-                errorDiv.style.display = 'block';
+                showToast("Cihazınız doğrudan uygulama içi paylaşımı desteklemiyor. Yandaki 'Gemini Web ile Aç' seçeneğini kullanabilirsiniz.", "error");
             }
+        }
+
+        async function processAndOpenWeb() {
+            // Trigger copy synchronously in gesture stack
+            const copied = await copyPromptToClipboard();
+
+            showToast(
+                copied 
+                    ? "✅ <b>Komut kopyalandı!</b><br>Gemini Web açılıyor... Lütfen fotoğrafı ekleyip komutu yapıştırın." 
+                    : "⚠️ Komut otomatik kopyalanamadı. Lütfen aşağıdaki kutudan kopyalayıp Gemini Web'e yapıştırın.",
+                copied ? "success" : "error"
+            );
+
+            setTimeout(() => {
+                window.open('https://gemini.google.com/app', '_blank');
+            }, 1000);
+        }
+
+        function showToast(message, type) {
+            const toast = document.getElementById('toastMessage');
+            toast.innerHTML = message;
+            toast.classList.remove('hidden', 'bg-emerald-100', 'text-emerald-800', 'bg-rose-100', 'text-rose-800');
+
+            if (type === 'success') {
+                toast.classList.add('bg-emerald-100', 'text-emerald-800');
+            } else {
+                toast.classList.add('bg-rose-100', 'text-rose-800');
+            }
+        }
+
+        function hideToast() {
+            document.getElementById('toastMessage').classList.add('hidden');
         }
     </script>
 </body>
