@@ -14,42 +14,42 @@
             color: #212529; 
         }
         .container { 
-            max-width: 400px; 
-            margin: 20px auto; 
+            max-width: 450px; 
+            margin: 10px auto; 
             background: #ffffff; 
-            padding: 30px 20px; 
+            padding: 25px 20px; 
             border-radius: 16px; 
             box-shadow: 0 4px 24px rgba(0,0,0,0.08); 
         }
-        h2 { font-size: 22px; margin: 0 0 10px 0; color: #0f172a; }
-        p { font-size: 15px; color: #64748b; margin: 0 0 25px 0; line-height: 1.4; }
+        h2 { font-size: 22px; margin: 0 0 8px 0; color: #0f172a; }
+        p { font-size: 14px; color: #64748b; margin: 0 0 20px 0; line-height: 1.4; }
         
         .upload-box { 
             border: 2px dashed #3b82f6; 
             border-radius: 12px; 
-            padding: 40px 20px; 
+            padding: 30px 20px; 
             background: #eff6ff; 
             cursor: pointer; 
             margin-bottom: 20px; 
             transition: background 0.2s;
         }
         .upload-box:active { background: #dbeafe; }
-        .upload-box-icon { font-size: 32px; margin-bottom: 10px; display: block; }
-        .upload-box-text { font-weight: 600; color: #1d4ed8; font-size: 16px; }
+        .upload-box-icon { font-size: 32px; margin-bottom: 8px; display: block; }
+        .upload-box-text { font-weight: 600; color: #1d4ed8; font-size: 15px; }
         
         #fileInput { display: none; }
         
         #preview { 
             max-width: 100%; 
-            max-height: 300px; 
+            max-height: 250px; 
             border-radius: 8px; 
             display: none; 
-            margin: 0 auto 20px auto; 
+            margin: 0 auto 15px auto; 
             object-fit: contain; 
             border: 1px solid #e2e8f0;
         }
         
-        .btn-share { 
+        .btn-action { 
             background: #0f172a; 
             color: #ffffff; 
             border: none; 
@@ -62,19 +62,104 @@
             display: none; 
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-        .btn-share:active { background: #1e293b; transform: scale(0.98); }
+        .btn-action:active { background: #1e293b; transform: scale(0.98); }
         
-        .status { margin-top: 15px; font-size: 14px; color: #10b981; display: none; font-weight: 500; background: #d1fae5; padding: 10px; border-radius: 8px;}
-        .error { color: #ef4444; font-size: 14px; margin-top: 10px; }
+        .status { 
+            margin-top: 15px; 
+            font-size: 14px; 
+            color: #065f46; 
+            display: none; 
+            font-weight: 500; 
+            background: #d1fae5; 
+            padding: 12px; 
+            border-radius: 8px;
+            text-align: left;
+            line-height: 1.5;
+        }
+        .error { 
+            color: #b91c1c; 
+            font-size: 14px; 
+            margin-top: 15px; 
+            background: #fee2e2; 
+            padding: 12px; 
+            border-radius: 8px;
+            display: none;
+            text-align: left;
+            line-height: 1.5;
+        }
+
+        /* Yönerge Kutusu Stilleri */
+        .guide-box {
+            margin-top: 25px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: left;
+        }
+        .guide-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #334155;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .guide-step {
+            font-size: 13px;
+            color: #475569;
+            margin-bottom: 8px;
+            line-height: 1.5;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+        .step-num {
+            background: #3b82f6;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: bold;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
         
-        .instruction-list { text-align: left; font-size: 13px; color: #64748b; margin-top: 25px; padding-left: 20px; }
-        .instruction-list li { margin-bottom: 6px; }
+        .prompt-container {
+            margin-top: 15px;
+            text-align: left;
+            display: none;
+        }
+        .prompt-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #64748b;
+            margin-bottom: 4px;
+            display: block;
+        }
+        .prompt-box {
+            width: 100%;
+            height: 80px;
+            padding: 8px;
+            font-size: 11px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            background: #ffffff;
+            color: #94a3b8;
+            resize: none;
+            box-sizing: border-box;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>Hızlı Tablo Çevirici</h2>
-        <p>Parça listesini çekin, otomatik prompt ile Gemini'ye aktarın.</p>
+        <h2>Parça Listesi Aktarımı</h2>
+        <p>Görseli seçin, tek tıkla Gemini'ye gönderin.</p>
         
         <div class="upload-box" onclick="document.getElementById('fileInput').click()">
             <span class="upload-box-icon">📸</span>
@@ -84,25 +169,44 @@
         
         <img id="preview" src="" alt="Önizleme">
         
-        <button class="btn-share" id="shareBtn" onclick="shareToGemini()">🚀 Kopyala ve Gemini'ye Yolla</button>
+        <button class="btn-action" id="actionBtn" onclick="processAndShare()">🚀 Kopyala ve Paylaş Menüsünü Aç</button>
         
-        <div class="status" id="statusMsg">✅ Prompt panoya kopyalandı! Açılan menüden Gemini uygulamasını seçip metin kutusuna yapıştırın.</div>
+        <div class="status" id="statusMsg"></div>
         <div class="error" id="errorMsg"></div>
 
-        <ul class="instruction-list">
-            <li>Yüklediğiniz fotoğraf cihazınızda kalır, sunucuya gitmez.</li>
-            <li>Sadece telefon ve tabletlerde "Paylaş" menüsü tam desteklenir.</li>
-        </ul>
+        <!-- Kullanım Yönergesi -->
+        <div class="guide-box">
+            <div class="guide-title">📌 Nasıl Kullanılır? (Özellikle iPhone için)</div>
+            
+            <div class="guide-step">
+                <span class="step-num">1</span>
+                <span>Fotoğrafı yükledikten sonra yukarıdaki siyah <strong>"🚀 Kopyala ve Paylaş"</strong> butonuna basın. (Gerekli tüm komutlar otomatik olarak telefonunuzun hafızasına kopyalanacaktır.)</span>
+            </div>
+            <div class="guide-step">
+                <span class="step-num">2</span>
+                <span>Ekranın altından telefonunuzun <strong>Paylaşım Menüsü</strong> açılacak. Uygulamalar listesini sağa doğru kaydırın. Eğer Gemini'yi göremiyorsanız en sağdaki <strong>"Daha Fazla (Üç Nokta)"</strong> simgesine tıklayıp Gemini'yi seçin.</span>
+            </div>
+            <div class="guide-step">
+                <span class="step-num">3</span>
+                <span>Gemini uygulaması açıldığında fotoğraf otomatik olarak eklenmiş olacak. Sadece alttaki <strong>mesaj yazma kutusuna basılı tutup "Yapıştır" deyin</strong> ve gönderin.</span>
+            </div>
+        </div>
+
+        <div class="prompt-container" id="promptContainer">
+            <span class="prompt-label">Arka planda kopyalanan komut (Görmeniz için):</span>
+            <textarea id="promptArea" class="prompt-box" readonly></textarea>
+        </div>
     </div>
 
     <script>
         let currentFile = null;
 
-        // Gemini'ye gidecek standart komutumuz
+        // Fiyat sütununu koruyan ve sıra dışı kodları tanıtan GÜNCEL PROMPT
         const promptText = `Aşağıdaki görselde yer alan yedek parça listesini incele ve doğrudan e-tablolara yapıştırılmaya uygun bir tabloya dönüştür.
-Tabloyu şu sütun başlıklarıyla oluştur: "Malzeme", "Malzeme Adı", "Adet", "Fiyat".
+Tabloyu KESİNLİKLE şu 4 sütun başlığıyla oluştur: "Malzeme", "Malzeme Adı", "Adet", "Fiyat".
+Görselde fiyat veya herhangi bir sütunun bilgisi yer almıyorsa o sütunu SİLME, sadece ilgili hücrelerin içini boş bırak.
 Adet kısmını sadece sayı olarak yaz ("ad", "adet" gibi ibareleri temizle).
-Eğer bir başlığın verisi (örneğin Fiyat) görselde hiç yoksa, o başlığı tamamen tablodan çıkar. Sadece görselde karşılığı olan verilerden oluşan düz bir tablo ver.`;
+Kritik Not: Malzeme kodları sadece '043.126' gibi standart formatta değildir. Görseldeki '1810 0291', 'SP 551889', 'FT 344571-K01', '075.168/2SD', 'SP C8 D1 002' gibi boşluklu, harfli, tireli veya slash (/) içeren karmaşık dizilimleri de mutlaka 'Malzeme' kodu olarak tanı ve tabloya o şekilde aktar.`;
 
         function handleFile(event) {
             const file = event.target.files[0];
@@ -113,38 +217,76 @@ Eğer bir başlığın verisi (örneğin Fiyat) görselde hiç yoksa, o başlı�
             preview.src = URL.createObjectURL(file);
             preview.style.display = 'block';
             
+            document.getElementById('promptArea').value = promptText;
+            document.getElementById('promptContainer').style.display = 'block';
             document.querySelector('.upload-box').style.display = 'none';
-            document.getElementById('shareBtn').style.display = 'block';
-            document.getElementById('errorMsg').textContent = '';
+            document.getElementById('actionBtn').style.display = 'block';
+            
+            document.getElementById('errorMsg').style.display = 'none';
             document.getElementById('statusMsg').style.display = 'none';
         }
 
-        async function shareToGemini() {
-            if (!currentFile) return;
-            const errorMsg = document.getElementById('errorMsg');
-            const statusMsg = document.getElementById('statusMsg');
-            errorMsg.textContent = '';
-            
+        function copyTextToClipboard(text) {
+            if (navigator.clipboard && window.isSecureContext) {
+                return navigator.clipboard.writeText(text).catch(() => fallbackCopy(text));
+            }
+            return fallbackCopy(text);
+        }
+
+        function fallbackCopy(text) {
             try {
-                // 1. Prompt'u arka planda panoya (hafızaya) kopyala
-                await navigator.clipboard.writeText(promptText);
-                statusMsg.style.display = 'block';
-                
-                // 2. Mobil paylaşım menüsünü aç
-                if (navigator.canShare && navigator.canShare({ files: [currentFile] })) {
+                const textArea = document.createElement("textarea");
+                textArea.value = text;
+                textArea.style.position = "fixed";
+                textArea.style.left = "-9999px";
+                textArea.style.top = "-9999px";
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                const success = document.execCommand('copy');
+                document.body.removeChild(textArea);
+                return success ? Promise.resolve() : Promise.reject();
+            } catch (err) {
+                return Promise.reject(err);
+            }
+        }
+
+        async function processAndShare() {
+            if (!currentFile) return;
+            
+            const errorDiv = document.getElementById('errorMsg');
+            const statusDiv = document.getElementById('statusMsg');
+            errorDiv.style.display = 'none';
+            statusDiv.style.display = 'none';
+
+            let copied = false;
+            try {
+                await copyTextToClipboard(promptText);
+                copied = true;
+            } catch (e) {
+                copied = false;
+            }
+
+            if (navigator.canShare && navigator.canShare({ files: [currentFile] })) {
+                try {
+                    statusDiv.innerHTML = copied 
+                        ? "✅ <strong>Komut (Prompt) başarıyla kopyalandı!</strong><br>Şimdi açılan menüden Gemini'yi seçin ve metin kutusuna <em>Yapıştır</em> deyin." 
+                        : "⚠️ Komut kopyalanamadı, lütfen alttaki kutudan elle kopyalayıp yapıştırın.";
+                    statusDiv.style.display = 'block';
+
                     await navigator.share({
                         files: [currentFile],
-                        title: 'Parça Listesi',
-                        text: 'Lütfen bu fotoğrafı Gemini uygulamasına aktarın.'
+                        title: 'Parça Listesi'
                     });
-                } else {
-                    errorMsg.innerHTML = "Cihazınız (veya tarayıcınız) doğrudan dosya paylaşımını desteklemiyor.<br><br>Komut kopyalandı! Lütfen fotoğrafı ve metni Gemini'ye kendiniz yapıştırın.";
+                } catch (err) {
+                    if (err.name !== 'AbortError') {
+                        errorDiv.innerHTML = "Paylaşım menüsü açılırken bir sorun oluştu: " + err.message;
+                        errorDiv.style.display = 'block';
+                    }
                 }
-            } catch (err) {
-                console.log(err);
-                if (err.name !== 'AbortError') { // AbortError kullanıcı paylaşım menüsünü kapatırsa döner, normaldir.
-                    errorMsg.textContent = 'İşlem sırasında bir hata oluştu: ' + err.message;
-                }
+            } else {
+                errorDiv.innerHTML = "Cihazınız doğrudan paylaşım menüsünü desteklemiyor. Lütfen fotoğrafı manuel olarak Gemini'ye yükleyin.";
+                errorDiv.style.display = 'block';
             }
         }
     </script>
